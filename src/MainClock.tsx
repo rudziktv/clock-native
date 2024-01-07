@@ -30,7 +30,7 @@ const MainClock = ({ refreshSec = 1000 }: MainClockProps) => {
 };
 
 export interface MainClockProps {
-    // date: Date;
+    date?: number;
     refreshSec?: number;
 }
 

@@ -3,6 +3,7 @@ import Span from "./Span";
 import { useEffect, useState } from "react";
 
 const Clock = ({
+    date,
     name = "Timezone",
     timezone = "Europe/Warsaw",
     refreshSec = 1000,
@@ -31,7 +32,7 @@ const Clock = ({
 };
 
 export interface ClockProps {
-    date?: Date;
+    date?: number;
     name?: string;
     timezone?: string;
     refreshSec?: number;

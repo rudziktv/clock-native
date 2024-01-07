@@ -9,7 +9,9 @@ import TimezoneSearch from "./src/TimezoneSearch";
 import { Timezones } from "./src/timezones";
 
 export default function App() {
-    const date = new Date();
+    // const date = new Date();
+
+    const [date, setDate] = useState(Date.now());
 
     const [clocks, setClocks] = useState<string[]>([]);
 
@@ -44,7 +46,8 @@ export default function App() {
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
-    //         date.setTime(Date.now());
+    //         // setDate(new Date().getTime());
+    //         // console.log(date);
     //     }, 200);
 
     //     return () => clearInterval(interval);
@@ -52,7 +55,7 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <MainClock />
+            <MainClock date={date} />
             <Modal
                 transparent
                 animationType="slide"
@@ -72,18 +75,15 @@ export default function App() {
                 style={{ alignSelf: "stretch" }}
                 contentContainerStyle={styles.scroll}
             >
+                <Clock date={date} name="Warsaw" />
                 <Clock
-                    // date={date}
-                    name="Warsaw"
-                />
-                <Clock
-                    // date={date}
+                    date={date}
                     name="New York"
                     timezone="America/New_York"
                 />
                 {clocks.map((tz, i) => (
                     <Clock
-                        // date={date}
+                        date={date}
                         name={tz.split("/").pop()?.replace("_", " ")}
                         key={tz}
                         timezone={tz}
