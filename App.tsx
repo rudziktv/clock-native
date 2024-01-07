@@ -44,6 +44,10 @@ export default function App() {
         }
     }, [timezone]);
 
+    useEffect(() => {
+        if (!selectorShown) setSearch("");
+    }, [selectorShown]);
+
     // useEffect(() => {
     //     const interval = setInterval(() => {
     //         // setDate(new Date().getTime());
