@@ -1,30 +1,41 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import Span from "./Span";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Clock = ({
     name = "Timezone",
     timezone = "Europe/Warsaw",
+    refreshSec = 1000,
+    onDelete,
 }: ClockProps) => {
-    const [date, setDate] = useState(new Date());
+    const [currentTime, setCurrentTime] = useState(
+        new Date().toLocaleTimeString("pl-PL", { timeZone: timezone })
+    );
 
-    setInterval(() => {
-        setDate(new Date());
-    }, 1000);
+    useEffect(() => {
+        const tick = setInterval(() => {
+            setCurrentTime(
+                new Date().toLocaleTimeString("pl-PL", { timeZone: timezone })
+            );
+        }, refreshSec);
+
+        return () => clearInterval(tick);
+    }, []);
 
     return (
-        <View style={style.card}>
+        <Pressable style={style.card} onLongPress={onDelete}>
             <Span>{name}</Span>
-            <Span style={style.time}>
-                {date.toLocaleTimeString("pl-PL", { timeZone: timezone })}
-            </Span>
-        </View>
+            <Span style={style.time}>{currentTime}</Span>
+        </Pressable>
     );
 };
 
 export interface ClockProps {
+    date?: Date;
     name?: string;
     timezone?: string;
+    refreshSec?: number;
+    onDelete?: () => void;
 }
 
 const style = StyleSheet.create({

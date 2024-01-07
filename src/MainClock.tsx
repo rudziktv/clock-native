@@ -1,15 +1,24 @@
 import { View, StyleSheet } from "react-native";
 import Span from "./Span";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const MainClock = () => {
-    const [currentTime, setCurrentTime] = useState("");
-    const [currentDate, setCurrentDate] = useState("");
+const MainClock = ({ refreshSec = 1000 }: MainClockProps) => {
+    const [currentTime, setCurrentTime] = useState(
+        new Date().toLocaleTimeString()
+    );
+    const [currentDate, setCurrentDate] = useState(
+        new Date().toLocaleDateString()
+    );
 
-    setInterval(() => {
-        setCurrentTime(new Date().toLocaleTimeString());
-        setCurrentDate(new Date().toLocaleDateString());
-    }, 1000);
+    useEffect(() => {
+        const tick = setInterval(() => {
+            const date = new Date();
+            setCurrentTime(date.toLocaleTimeString());
+            setCurrentDate(date.toLocaleDateString());
+        }, refreshSec);
+
+        return () => clearInterval(tick);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -19,6 +28,11 @@ const MainClock = () => {
         </View>
     );
 };
+
+export interface MainClockProps {
+    // date: Date;
+    refreshSec?: number;
+}
 
 const styles = StyleSheet.create({
     container: {
