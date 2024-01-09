@@ -2,35 +2,35 @@ import { View, StyleSheet } from "react-native";
 import Span from "./Span";
 import { useEffect, useState } from "react";
 
-const MainClock = ({ refreshSec = 1000 }: MainClockProps) => {
-    const [currentTime, setCurrentTime] = useState(
-        new Date().toLocaleTimeString()
-    );
-    const [currentDate, setCurrentDate] = useState(
-        new Date().toLocaleDateString()
-    );
+const MainClock = ({ date, refreshSec = 1000 }: MainClockProps) => {
+    // const [currentTime, setCurrentTime] = useState(
+    //     new Date().toLocaleTimeString()
+    // );
+    // const [currentDate, setCurrentDate] = useState(
+    //     new Date().toLocaleDateString()
+    // );
 
-    useEffect(() => {
-        const tick = setInterval(() => {
-            const date = new Date();
-            setCurrentTime(date.toLocaleTimeString());
-            setCurrentDate(date.toLocaleDateString());
-        }, refreshSec);
+    // useEffect(() => {
+    //     const tick = setInterval(() => {
+    //         const date = new Date();
+    //         setCurrentTime(date.toLocaleTimeString());
+    //         setCurrentDate(date.toLocaleDateString());
+    //     }, refreshSec);
 
-        return () => clearInterval(tick);
-    }, []);
+    //     return () => clearInterval(tick);
+    // }, []);
 
     return (
         <View style={styles.container}>
             <Span style={styles.timezone}>Current</Span>
-            <Span style={styles.time}>{currentTime}</Span>
-            <Span style={styles.date}>{currentDate}</Span>
+            <Span style={styles.time}>{date.toLocaleTimeString()}</Span>
+            <Span style={styles.date}>{date.toLocaleDateString()}</Span>
         </View>
     );
 };
 
 export interface MainClockProps {
-    date?: number;
+    date: Date;
     refreshSec?: number;
 }
 

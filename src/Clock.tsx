@@ -9,30 +9,32 @@ const Clock = ({
     refreshSec = 1000,
     onDelete,
 }: ClockProps) => {
-    const [currentTime, setCurrentTime] = useState(
-        new Date().toLocaleTimeString("pl-PL", { timeZone: timezone })
-    );
+    // const [currentTime, setCurrentTime] = useState(
+    //     new Date().toLocaleTimeString("pl-PL", { timeZone: timezone })
+    // );
 
-    useEffect(() => {
-        const tick = setInterval(() => {
-            setCurrentTime(
-                new Date().toLocaleTimeString("pl-PL", { timeZone: timezone })
-            );
-        }, refreshSec);
+    // useEffect(() => {
+    //     const tick = setInterval(() => {
+    //         setCurrentTime(
+    //             new Date().toLocaleTimeString("pl-PL", { timeZone: timezone })
+    //         );
+    //     }, refreshSec);
 
-        return () => clearInterval(tick);
-    }, []);
+    //     return () => clearInterval(tick);
+    // }, []);
 
     return (
         <Pressable style={style.card} onLongPress={onDelete}>
             <Span>{name}</Span>
-            <Span style={style.time}>{currentTime}</Span>
+            <Span style={style.time}>
+                {date.toLocaleTimeString("pl-PL", { timeZone: timezone })}
+            </Span>
         </Pressable>
     );
 };
 
 export interface ClockProps {
-    date?: number;
+    date: Date;
     name?: string;
     timezone?: string;
     refreshSec?: number;

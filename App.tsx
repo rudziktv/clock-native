@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { Modal, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+    FlatList,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
 import Span from "./src/Span";
 import { useEffect, useState } from "react";
 import MainClock from "./src/MainClock";
@@ -11,7 +18,7 @@ import { Timezones } from "./src/timezones";
 export default function App() {
     // const date = new Date();
 
-    const [date, setDate] = useState(Date.now());
+    const [date, setDate] = useState(new Date());
 
     const [clocks, setClocks] = useState<string[]>([]);
 
@@ -48,14 +55,14 @@ export default function App() {
         if (!selectorShown) setSearch("");
     }, [selectorShown]);
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         // setDate(new Date().getTime());
-    //         // console.log(date);
-    //     }, 200);
+    useEffect(() => {
+        const tick = setInterval(() => {
+            setDate(new Date());
+            // console.log(date);
+        }, 1000);
 
-    //     return () => clearInterval(interval);
-    // }, []);
+        return () => clearInterval(tick);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -75,7 +82,7 @@ export default function App() {
                 />
             </Modal>
 
-            <ScrollView
+            {/* <ScrollView
                 style={{ alignSelf: "stretch" }}
                 contentContainerStyle={styles.scroll}
             >
@@ -96,7 +103,23 @@ export default function App() {
                         }
                     />
                 ))}
-            </ScrollView>
+            </ScrollView> */}
+            <FlatList
+                style={{ alignSelf: "stretch" }}
+                contentContainerStyle={styles.scroll}
+                data={clocks}
+                renderItem={({ item: tz, index: i }) => (
+                    <Clock
+                        date={date}
+                        name={tz.split("/").pop()?.replace("_", " ")}
+                        key={tz}
+                        timezone={tz}
+                        onDelete={() =>
+                            setClocks(clocks.filter((_, j) => i !== j))
+                        }
+                    />
+                )}
+            />
             <ActionButton onPress={() => setSelectorShown(true)} />
         </View>
     );
